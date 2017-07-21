@@ -34,6 +34,7 @@ var mToggled = false;
 var mMinusOnes = new THREE.Vector2(-1, -1);
 
 // Some presets.
+var accuracy = 120; // lower = more accourate
 var presets = [
   { // Default
     feed: 0.037,
@@ -195,8 +196,7 @@ var resize = function(width, height)
     mUniforms.screenHeight.value = canvasHeight/2;
 }
 
-var render = function(time)
-{
+var render = function(time) {
     var dt = (time - mLastTime)/20.0;
     if(dt > 0.8 || dt<=0)
         dt = 0.8;
@@ -207,23 +207,19 @@ var render = function(time)
     mUniforms.feed.value = presets[8].feed;
     mUniforms.kill.value = presets[8].kill;
 
-    for(var i=0; i<8; ++i)
-    {
-        if(!mToggled)
-        {
-            mUniforms.tSource.value = mTexture1;
-            mRenderer.render(mScene, mCamera, mTexture2, true);
-            mUniforms.tSource.value = mTexture2;
-        }
-        else
-        {
-            mUniforms.tSource.value = mTexture2;
-            mRenderer.render(mScene, mCamera, mTexture1, true);
-            mUniforms.tSource.value = mTexture1;
-        }
+    for(var i=0; i<accuracy; ++i) {
+      if(!mToggled) {
+          mUniforms.tSource.value = mTexture1;
+          mRenderer.render(mScene, mCamera, mTexture2, true);
+          mUniforms.tSource.value = mTexture2;
+      } else {
+          mUniforms.tSource.value = mTexture2;
+          mRenderer.render(mScene, mCamera, mTexture1, true);
+          mUniforms.tSource.value = mTexture1;
+      }
 
-        mToggled = !mToggled;
-        mUniforms.brush.value = mMinusOnes;
+      mToggled = !mToggled;
+      mUniforms.brush.value = mMinusOnes;
     }
 
     mScreenQuad.material = mScreenMaterial;
@@ -231,10 +227,11 @@ var render = function(time)
 
     // set FPS
     // run super fast for fist X second
-    if (mLastTime < 5000) {
+    if (mLastTime < 2600) {
       // console.log(mLastTime);
       requestAnimationFrame(render);
     } else if (mLastTime < 100000){ // cap at 100 seconds
+      accuracy = 10;
       setTimeout( function() {
         requestAnimationFrame( render );
       }, 1000 / 10 );
