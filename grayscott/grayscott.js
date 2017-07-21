@@ -23,7 +23,6 @@ var mScene;
 var mCamera;
 var mUniforms;
 var mColors;
-var mColorsNeedUpdate = true;
 var mLastTime = 0;
 
 var mTexture1, mTexture2;
@@ -36,59 +35,58 @@ var mMinusOnes = new THREE.Vector2(-1, -1);
 
 // Some presets.
 var presets = [
-    { // Default
-      feed: 0.037,
+  { // Default
+    feed: 0.037,
+    kill: 0.06
+  },
+  { // Solitons
+      feed: 0.03,
+      kill: 0.062
+  },
+  { // Pulsating solitons
+      feed: 0.025,
       kill: 0.06
-    },
-    { // Solitons
-        feed: 0.03,
-        kill: 0.062
-    },
-    { // Pulsating solitons
-        feed: 0.025,
-        kill: 0.06
-    },
-    { // Worms.
-        feed: 0.078,
-        kill: 0.061
-    },
-    { // Mazes
-        feed: 0.029,
-        kill: 0.057
-    },
-    { // Holes
-        feed: 0.039,
-        kill: 0.058
-    },
-    { // Chaos
-        feed: 0.026,
-        kill: 0.051
-    },
-    { // Chaos and holes (by clem)
-        feed: 0.034,
-        kill: 0.056
-    },
-    { // Moving spots.
-        feed: 0.014,
-        kill: 0.054
-    },
-    { // Spots and loops.
-        feed: 0.018,
-        kill: 0.051
-    },
-    { // Waves
-        feed: 0.014,
-        kill: 0.045
-    },
-    { // The U-Skate World
-        feed: 0.062,
-        kill: 0.06093
-    },
-    { // ken's loops
-      feed: 0.0178,
-      kill: 0.06
-
-    }
+  },
+  { // Worms.
+      feed: 0.078,
+      kill: 0.061
+  },
+  { // Mazes
+      feed: 0.029,
+      kill: 0.057
+  },
+  { // Holes
+      feed: 0.039,
+      kill: 0.058
+  },
+  { // Chaos
+      feed: 0.026,
+      kill: 0.051
+  },
+  { // Chaos and holes (by clem)
+      feed: 0.034,
+      kill: 0.056
+  },
+  { // Moving spots.
+      feed: 0.014,
+      kill: 0.054
+  },
+  { // Spots and loops.
+      feed: 0.018,
+      kill: 0.051
+  },
+  { // Waves
+      feed: 0.014,
+      kill: 0.045
+  },
+  { // The U-Skate World
+      feed: 0.062,
+      kill: 0.06093
+  },
+  { // ken's loops
+    feed: 0.0178,
+    kill: 0.06
+  }
 ];
 
 // Configuration.
@@ -96,7 +94,6 @@ var feed = presets[4].feed;
 var kill = presets[4].kill;
 
 init = function(){
-    init_controls();
 
     canvasQ = $('#myCanvas');
     canvas = canvasQ.get(0);
@@ -120,15 +117,11 @@ init = function(){
         feed: {type: "f", value: feed},
         kill: {type: "f", value: kill},
         brush: {type: "v2", value: new THREE.Vector2(-10, -10)},
-        color1: {type: "v4", value: new THREE.Vector4(0, 0, 0.0, 1)},
-        color2: {type: "v4", value: new THREE.Vector4(0, 1, 0, 0.2)},
-        color3: {type: "v4", value: new THREE.Vector4(1, 1, 0, 0.31)},
-        color4: {type: "v4", value: new THREE.Vector4(1, 0, 0, 0.4)},
-        color5: {type: "v4", value: new THREE.Vector4(1, 1, 1, 0.6)}
+        color1: {type: "v4", value: new THREE.Vector4(1, 1, 1, 0.15)},
+        color2: {type: "v4", value: new THREE.Vector4(0.8666, 0.8666, 0.8666, 0.2)},
+        color3: {type: "v4", value: new THREE.Vector4(0.8666, 0.8666, 0.8666, 0.9)}
     };
-    // mColors = [mUniforms.color1, mUniforms.color2, mUniforms.color3, mUniforms.color4, mUniforms.color5];
     mColors = [mUniforms.color1, mUniforms.color2, mUniforms.color3];
-    // $("#gradient").gradient("setUpdateCallback", onUpdatedColor);
 
     mGSMaterial = new THREE.ShaderMaterial({
       uniforms: mUniforms,
@@ -145,7 +138,6 @@ init = function(){
     mScreenQuad = new THREE.Mesh(plane, mScreenMaterial);
     mScene.add(mScreenQuad);
 
-    mColorsNeedUpdate = true;
 
     resize(canvas.clientWidth, canvas.clientHeight);
 
@@ -234,9 +226,6 @@ var render = function(time)
         mUniforms.brush.value = mMinusOnes;
     }
 
-    if(mColorsNeedUpdate)
-        updateUniformsColors();
-
     mScreenQuad.material = mScreenMaterial;
     mRenderer.render(mScene, mCamera);
 
@@ -256,27 +245,8 @@ loadPreset = function(idx)
 {
     feed = presets[idx].feed;
     kill = presets[idx].kill;
-    worldToForm();
 }
 
-var updateUniformsColors = function()
-{
-    var values = $("#gradient").gradient("getValuesRGBS");
-    console.log(mColors);
-    for(var i=0; i<mColors.length; i++)
-    {
-        var v = values[i];
-        mColors[i].value = new THREE.Vector4(v[0], v[1], v[2], v[3]);
-    }
-
-    mColorsNeedUpdate = false;
-}
-
-// var onUpdatedColor = function()
-// {
-//     mColorsNeedUpdate = true;
-//     updateShareString();
-// }
 
 var onMouseMove = function(e)
 {
@@ -311,72 +281,6 @@ snapshot = function()
 {
     var dataURL = canvas.toDataURL("image/png");
     window.open(dataURL, "name-"+Math.random());
-}
-
-// resize canvas to fullscreen, scroll to upper left
-// corner and try to enable fullscreen mode and vice-versa
-fullscreen = function() {
-
-    var canv = $('#myCanvas');
-    var elem = canv.get(0);
-
-    if(isFullscreen())
-    {
-        // end fullscreen
-        if (elem.cancelFullscreen) {
-            elem.cancelFullscreen();
-        } else if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else if (document.webkitCancelFullScreen) {
-            document.webkitCancelFullScreen();
-        }
-    }
-
-    if(!isFullscreen())
-    {
-        // save current dimensions as old
-        window.oldCanvSize = {
-            width : canv.width(),
-            height: canv.height()
-        };
-
-        // adjust canvas to screen size
-        resize(screen.width, screen.height);
-
-        // scroll to upper left corner
-        $('html, body').scrollTop(canv.offset().top);
-        $('html, body').scrollLeft(canv.offset().left);
-
-        // request fullscreen in different flavours
-        if (elem.requestFullscreen) {
-            elem.requestFullscreen();
-        } else if (elem.mozRequestFullScreen) {
-            elem.mozRequestFullScreen();
-        } else if (elem.webkitRequestFullscreen) {
-            elem.webkitRequestFullscreen();
-        }
-    }
-}
-
-var isFullscreen = function()
-{
-    return document.mozFullScreenElement ||
-        document.webkitCurrentFullScreenElement ||
-        document.fullscreenElement;
-}
-
-$(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(ev) {
-    // restore old canvas size
-    if(!isFullscreen())
-        resize(window.oldCanvSize.width, window.oldCanvSize.height);
-});
-
-var worldToForm = function()
-{
-}
-
-var init_controls = function()
-{
 }
 
 
