@@ -209,13 +209,13 @@ var render = function(time) {
 
     for(var i=0; i<accuracy; ++i) {
       if(!mToggled) {
-          mUniforms.tSource.value = mTexture1;
-          mRenderer.render(mScene, mCamera, mTexture2, true);
-          mUniforms.tSource.value = mTexture2;
+        mUniforms.tSource.value = mTexture1;
+        mRenderer.render(mScene, mCamera, mTexture2, true);
+        mUniforms.tSource.value = mTexture2;
       } else {
-          mUniforms.tSource.value = mTexture2;
-          mRenderer.render(mScene, mCamera, mTexture1, true);
-          mUniforms.tSource.value = mTexture1;
+        mUniforms.tSource.value = mTexture2;
+        mRenderer.render(mScene, mCamera, mTexture1, true);
+        mUniforms.tSource.value = mTexture1;
       }
 
       mToggled = !mToggled;
@@ -240,15 +240,14 @@ var render = function(time) {
 
 
 
-var onMouseMove = function(e)
-{
-    var ev = e ? e : window.event;
+var onMouseMove = function(e){
+  var ev = e ? e : window.event;
 
-    mMouseX = ev.pageX - canvasQ.offset().left; // these offsets work with
-    mMouseY = ev.pageY - canvasQ.offset().top; //  scrolled documents too
+  mMouseX = ev.pageX - canvasQ.offset().left; // these offsets work with
+  mMouseY = ev.pageY - canvasQ.offset().top; //  scrolled documents too
 
-    if(mMouseDown)
-        mUniforms.brush.value = new THREE.Vector2(mMouseX/canvasWidth, 1-mMouseY/canvasHeight);
+  if(mMouseDown)
+    mUniforms.brush.value = new THREE.Vector2(mMouseX/canvasWidth, 1-mMouseY/canvasHeight);
 }
 
 var onMouseDown = function(e){
