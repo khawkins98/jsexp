@@ -37,10 +37,8 @@ var mMinusOnes = new THREE.Vector2(-1, -1);
 // Some presets.
 var presets = [
     { // Default
-        //feed: 0.018,
-        //kill: 0.051
-        feed: 0.037,
-        kill: 0.06
+      feed: 0.037,
+      kill: 0.06
     },
     { // Solitons
         feed: 0.03,
@@ -252,11 +250,6 @@ var render = function(time)
         requestAnimationFrame( render );
       }, 1000 / 10 );
     }
-
-        // console.log(mLastTime);
-    // renderer.render();
-
-    // requestAnimationFrame(render);
 }
 
 loadPreset = function(idx)
@@ -380,119 +373,11 @@ $(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', 
 
 var worldToForm = function()
 {
-    //document.ex.sldReplenishment.value = feed * 1000;
-    // $("#sld_replenishment").slider("value", feed);
-    // $("#sld_diminishment").slider("value", kill);
 }
 
 var init_controls = function()
 {
-    // $("#sld_replenishment").slider({
-    //     value: feed, min: 0, max:0.1, step:0.001,
-    //     change: function(event, ui) {$("#replenishment").html(ui.value); feed = ui.value; updateShareString();},
-    //     slide: function(event, ui) {$("#replenishment").html(ui.value); feed = ui.value; updateShareString();}
-    // });
-    // $("#sld_replenishment").slider("value", feed);
-    // $("#sld_diminishment").slider({
-    //     value: kill, min: 0, max:0.073, step:0.001,
-    //     change: function(event, ui) {$("#diminishment").html(ui.value); kill = ui.value; updateShareString();},
-    //     slide: function(event, ui) {$("#diminishment").html(ui.value); kill = ui.value; updateShareString();}
-    // });
-    // $("#sld_diminishment").slider("value", kill);
-
-    // $('#share').keypress(function (e) {
-    //     if (e.which == 13) {
-    //         parseShareString();
-    //         return false;
-    //     }
-    // });
-
-    // $("#btn_clear").button({
-    //     icons : {primary : "ui-icon-document"},
-    //     text : false
-    // });
-    // $("#btn_snapshot").button({
-    //     icons : {primary : "ui-icon-image"},
-    //     text : false
-    // });
-    // $("#btn_fullscreen").button({
-    //     icons : {primary : "ui-icon-arrow-4-diag"},
-    //     text : false
-    // });
-
-    // $("#notworking").click(function(){
-    //     $("#requirement_dialog").dialog("open");
-    // });
-    // $("#requirement_dialog").dialog({
-    //     autoOpen: false
-    // });
 }
 
-// alertInvalidShareString = function()
-// {
-//     $("#share").val("Invalid string!");
-//     setTimeout(updateShareString, 1000);
-// }
-
-// parseShareString = function()
-// {
-//     var str = $("#share").val();
-//     var fields = str.split(",");
-//
-//     if(fields.length != 12)
-//     {
-//         alertInvalidShareString();
-//         return;
-//     }
-//
-//     var newFeed = parseFloat(fields[0]);
-//     var newKill = parseFloat(fields[1]);
-//
-//     if(isNaN(newFeed) || isNaN(newKill))
-//     {
-//         alertInvalidShareString();
-//         return;
-//     }
-//
-//     var newValues = [];
-//     for(var i=0; i<mColors.length; i++)
-//     {
-//         var v = [parseFloat(fields[2+2*i]), fields[2+2*i+1]];
-//
-//         if(isNaN(v[0]))
-//         {
-//             alertInvalidShareString();
-//             return;
-//         }
-//
-//         // Check if the string is a valid color.
-//         if(! /^#[0-9A-F]{6}$/i.test(v[1]))
-//         {
-//             alertInvalidShareString();
-//             return;
-//         }
-//
-//         newValues.push(v);
-//     }
-//
-//     $("#gradient").gradient("setValues", newValues);
-//     feed = newFeed;
-//     kill = newKill;
-//     worldToForm();
-// }
-
-// updateShareString = function()
-// {
-//     var str = "".concat(feed, ",", kill);
-//
-//     var values = $("#gradient").gradient("getValues");
-//     console.log(values);
-//     for(var i=0; i<values.length; i++)
-//     {
-//         var v = values[i];
-//         str += "".concat(",", v[0], ",", v[1]);
-//     }
-//     $("#share").val(str);
-// }
 
 })();
