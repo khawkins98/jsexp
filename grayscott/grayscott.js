@@ -95,7 +95,6 @@ var feed = presets[4].feed;
 var kill = presets[4].kill;
 
 init = function(){
-
     canvasQ = $('#myCanvas');
     canvas = canvasQ.get(0);
 
@@ -103,11 +102,11 @@ init = function(){
     canvas.onmouseup = onMouseUp;
     canvas.onmousemove = onMouseMove;
 
-    mRenderer = new THREE.WebGLRenderer({canvas: canvas, preserveDrawingBuffer: true});
+    mRenderer = new THREE.WebGLRenderer({canvas: canvas, preserveDrawingBuffer: false});
 
     mScene = new THREE.Scene();
     mCamera = new THREE.OrthographicCamera(-0.5, 0.5, 0.5, -0.5, -10000, 10000);
-    mCamera.position.z = 100;
+    // mCamera.position.z = 10;
     mScene.add(mCamera);
 
     mUniforms = {
@@ -139,9 +138,7 @@ init = function(){
     mScreenQuad = new THREE.Mesh(plane, mScreenMaterial);
     mScene.add(mScreenQuad);
 
-
     resize(canvas.clientWidth, canvas.clientHeight);
-
 
     render(0);
     // mUniforms.brush.value = new THREE.Vector2(0.5, 0.5);
@@ -159,13 +156,14 @@ init = function(){
     setTimeout( function() {
       mUniforms.brush.value = new THREE.Vector2((canvasWidth*.3)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
     }, 550 );
-    loadPreset(4);
 
-    // requestAnimationFrame(render);
+    // set drawing type
+    feed = presets[4].feed;
+    // kill = presets[4].kill;
+
 }
 
-var resize = function(width, height)
-{
+var resize = function(width, height) {
     // Set the new shape of canvas.
     canvasQ.width(width);
     canvasQ.height(height);
@@ -187,10 +185,12 @@ var resize = function(width, height)
                          magFilter: THREE.LinearFilter,
                          format: THREE.RGBAFormat,
                          type: THREE.FloatType});
-    mTexture1.wrapS = THREE.RepeatWrapping;
-    mTexture1.wrapT = THREE.RepeatWrapping;
-    mTexture2.wrapS = THREE.RepeatWrapping;
-    mTexture2.wrapT = THREE.RepeatWrapping;
+
+    // do not wrap at edges
+    // mTexture1.wrapS = THREE.RepeatWrapping;
+    // mTexture1.wrapT = THREE.RepeatWrapping;
+    // mTexture2.wrapS = THREE.RepeatWrapping;
+    // mTexture2.wrapT = THREE.RepeatWrapping;
 
     mUniforms.screenWidth.value = canvasWidth/2;
     mUniforms.screenHeight.value = canvasHeight/2;
@@ -238,11 +238,6 @@ var render = function(time) {
     }
 }
 
-loadPreset = function(idx)
-{
-    feed = presets[idx].feed;
-    kill = presets[idx].kill;
-}
 
 
 var onMouseMove = function(e)
@@ -256,28 +251,15 @@ var onMouseMove = function(e)
         mUniforms.brush.value = new THREE.Vector2(mMouseX/canvasWidth, 1-mMouseY/canvasHeight);
 }
 
-var onMouseDown = function(e)
-{
-    var ev = e ? e : window.event;
-    mMouseDown = true;
+var onMouseDown = function(e){
+  var ev = e ? e : window.event;
+  mMouseDown = true;
 
-    mUniforms.brush.value = new THREE.Vector2(mMouseX/canvasWidth, 1-mMouseY/canvasHeight);
+  mUniforms.brush.value = new THREE.Vector2(mMouseX/canvasWidth, 1-mMouseY/canvasHeight);
 }
 
-var onMouseUp = function(e)
-{
-    mMouseDown = false;
-}
-
-clean = function()
-{
-    mUniforms.brush.value = new THREE.Vector2(-10, -10);
-}
-
-snapshot = function()
-{
-    var dataURL = canvas.toDataURL("image/png");
-    window.open(dataURL, "name-"+Math.random());
+var onMouseUp = function(e){
+  mMouseDown = false;
 }
 
 
