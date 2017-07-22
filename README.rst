@@ -19,3 +19,8 @@ slight changes in feeding and death rates.
 This experiment uses `Three.js <http://mrdoob.github.com/three.js/>`_
 and performs calculations on the GPU.
 It requires a WebGL enabled browser.
+
+
+see:
+- http://www.karlsims.com/rd-exhibit.html
+- http://www.karlsims.com/rd.html

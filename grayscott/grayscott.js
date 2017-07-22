@@ -97,10 +97,20 @@ var kill = presets[4].kill;
 
 var white = new THREE.Vector4(1, 1, 1, 0.15);
 
+
+
 init = function(){
-    canvasQ = $('#myCanvas');
-    canvas = canvasQ.get(0);
-    // console.log(canvas,canvasQ)
+
+    // insert canvas
+    var canvas = document.createElement('canvas');
+    canvas.id     = "myCanvas";
+    canvas.width  = 1224;
+    canvas.height = 768;
+    var element = document.getElementById('target');
+    var targetparent = document.getElementById('targetparent');
+    targetparent.insertBefore(canvas, element);
+
+    canvasQ = $(canvas);
 
     canvas.onmousedown = onMouseDown;
     canvas.onmouseup = onMouseUp;

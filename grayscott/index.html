@@ -101,13 +101,16 @@
       gl_FragColor = vec4(col.r, col.g, col.b, 1.0);
     }
   </script>
-  <script type="text/javascript" src="grayscott.js"></script>
   <meta charset="UTF-8">
 </head>
 <body>
-    <canvas id="myCanvas" class="viewer" style="width:1024px;height:512px"></canvas>
-    <script>
-      init();
-    </script>
+  <div id="targetparent">
+    <div id="target">Some content here</div>
+  </div>
+
+  <script type="text/javascript" src="grayscott.js"></script>
+  <script>
+    init();
+  </script>
 </body>
 </html>
