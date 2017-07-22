@@ -21,11 +21,14 @@
   uniform float delta;
   uniform float feed;
   uniform float kill;
+  uniform float scale;
   uniform vec2 brush;
 
+  // float scale = 3.4;
+
   vec2 texel = vec2(1.0/screenWidth, 1.0/screenHeight);
-  float step_x = 1.0/screenWidth;
-  float step_y = 1.0/screenHeight;
+  float step_x = scale/screenWidth;
+  float step_y = scale/screenHeight;
 
   void main() {
     if(brush.x < -5.0) {

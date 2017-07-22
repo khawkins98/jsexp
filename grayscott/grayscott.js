@@ -34,7 +34,8 @@ var mToggled = false;
 var mMinusOnes = new THREE.Vector2(-1, -1);
 
 // Some presets.
-var accuracy = 120; // lower = more accourate
+var accuracy = 280; // lower = more accourate
+var scale = 3.4; // 1.0 = 100%
 var presets = [
   { // Default
     feed: 0.037,
@@ -94,9 +95,12 @@ var presets = [
 var feed = presets[4].feed;
 var kill = presets[4].kill;
 
+var white = new THREE.Vector4(1, 1, 1, 0.15);
+
 init = function(){
     canvasQ = $('#myCanvas');
     canvas = canvasQ.get(0);
+    // console.log(canvas,canvasQ)
 
     canvas.onmousedown = onMouseDown;
     canvas.onmouseup = onMouseUp;
@@ -114,12 +118,13 @@ init = function(){
         screenHeight: {type: "f", value: undefined},
         tSource: {type: "t", value: undefined},
         delta: {type: "f", value: 1.0},
+        scale: {type: "f", value: scale},
         feed: {type: "f", value: feed},
         kill: {type: "f", value: kill},
         brush: {type: "v2", value: new THREE.Vector2(-10, -10)},
-        color1: {type: "v4", value: new THREE.Vector4(1, 1, 1, 0.15)},
-        color2: {type: "v4", value: new THREE.Vector4(0.8666, 0.8666, 0.8666, 0.2)},
-        color3: {type: "v4", value: new THREE.Vector4(0.8666, 0.8666, 0.8666, 0.9)}
+        color1: {type: "v4", value: white},
+        color2: {type: "v4", value: white},
+        color3: {type: "v4", value: white}
     };
     mColors = [mUniforms.color1, mUniforms.color2, mUniforms.color3];
 
@@ -156,6 +161,15 @@ init = function(){
     setTimeout( function() {
       mUniforms.brush.value = new THREE.Vector2((canvasWidth*.3)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
     }, 550 );
+
+
+    mColors[0].value = new THREE.Vector4(1, 1, 1, 0.199);
+    mColors[1].value = new THREE.Vector4(107/255, 172/255, 67/255, 0.2);
+    mColors[2].value = new THREE.Vector4(107/255, 172/255, 67/255, 0.9);
+    // mColors[2].value = new THREE.Vector4(0.8666, 0.8666, 0.8666, 0.9);
+    setTimeout( function() {
+    }, 1600 );
+
 
     // set drawing type
     feed = presets[4].feed;
@@ -227,10 +241,10 @@ var render = function(time) {
 
     // set FPS
     // run super fast for fist X second
-    if (mLastTime < 2600) {
+    if (mLastTime < 1600) {
       // console.log(mLastTime);
       requestAnimationFrame(render);
-    } else if (mLastTime < 100000){ // cap at 100 seconds
+    } else if (mLastTime < 10000){ // cap at 100 seconds
       accuracy = 10;
       setTimeout( function() {
         requestAnimationFrame( render );
