@@ -116,7 +116,7 @@ initDiffusion = function(target,color1,color2,color3,opacity) {
   var setsize = function() {
     // Set the new shape of canvas.
     canvasQ.width($(target).width());
-    canvasQ.height($(target).height()-5);
+    canvasQ.height($(target).height()+7);
 
     // Get the real size of canvas.
     canvasWidth = canvasQ.width();
@@ -150,7 +150,8 @@ initDiffusion = function(target,color1,color2,color3,opacity) {
   var resize = function() {
     // Set the new shape of canvas.
     canvasQ.width($(target).width());
-    // canvasQ.height($(target).height()-10);
+    canvasQ.height($(target).height());
+    canvasQ.css('margin-bottom','-'+($(target).innerHeight()-18)+'px');
 
     // Get the real size of canvas.
     canvasWidth = canvasQ.width();
@@ -395,7 +396,9 @@ initDiffusion = function(target,color1,color2,color3,opacity) {
 
     setsize();
     $( window ).resize(function() {
-      resize();
+      setTimeout( function() {
+        resize();
+      }, 100 );
     });
 
     render(0);
