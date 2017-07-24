@@ -2,7 +2,6 @@
 JavaScript Experiments
 ======================
 
-Some JavaScript experiments. You can see them online using the links below.
 `Google Chrome <https://www.google.com/chrome>`_ is the best browser
 for these demos, but `Opera <http://www.opera.com>`_ or
 Firefox should be fine too.

@@ -7,12 +7,10 @@
  * p.mneila at upm.es
  */
 
-// (function(){
-
-
-
-init = function(){
-
+initDiffusion = function(target,color1,color2,color3,opacity) {
+  // target = target div
+  // we use the vis as a background by injecting it just before a div
+  // color1= array of colors to use [r,g,b,position]
 
   // Shader literals.
   // https://stackoverflow.com/a/14248861/725343
@@ -89,40 +87,41 @@ init = function(){
     vec2 texel = vec2(.0/screenWidth, 1.0/screenHeight);
 
     void main() {
-        float value = texture2D(tSource, vUv).g;
-        //int step = int(floor(value));
-        //float a = fract(value);
-        float a;
-        vec3 col;
+      float value = texture2D(tSource, vUv).g;
+      //int step = int(floor(value));
+      //float a = fract(value);
+      float a;
+      vec3 col;
 
-        if(value <= color1.a)
-          col = color1.rgb;
-        if(value > color1.a && value <= color2.a) {
-          a = (value - color1.a)/(color2.a - color1.a);
-          col = mix(color1.rgb, color2.rgb, a);
-        }
-        if(value > color2.a && value <= color3.a) {
-          a = (value - color2.a)/(color3.a - color2.a);
-          col = mix(color2.rgb, color3.rgb, a);
-        }
-        if(value > color3.a && value <= color4.a) {
-          a = (value - color3.a)/(color4.a - color3.a);
-          col = mix(color3.rgb, color4.rgb, a);
-        }
+      if(value <= color1.a)
+        col = color1.rgb;
+      if(value > color1.a && value <= color2.a) {
+        a = (value - color1.a)/(color2.a - color1.a);
+        col = mix(color1.rgb, color2.rgb, a);
+      }
+      if(value > color2.a && value <= color3.a) {
+        a = (value - color2.a)/(color3.a - color2.a);
+        col = mix(color2.rgb, color3.rgb, a);
+      }
+      if(value > color3.a && value <= color4.a) {
+        a = (value - color3.a)/(color4.a - color3.a);
+        col = mix(color3.rgb, color4.rgb, a);
+      }
 
       gl_FragColor = vec4(col.r, col.g, col.b, 1.0);
     }
   `;
 
   // Interaction.
-  var resize = function(width, height) {
+  var setsize = function() {
     // Set the new shape of canvas.
-    canvasQ.width(width);
-    canvasQ.height(height);
+    canvasQ.width($(target).width());
+    canvasQ.height($(target).height()-5);
 
     // Get the real size of canvas.
     canvasWidth = canvasQ.width();
     canvasHeight = canvasQ.height();
+    console.log(canvasQ.height())
 
     mRenderer.setSize(canvasWidth, canvasHeight);
 
@@ -148,6 +147,40 @@ init = function(){
     mUniforms.screenHeight.value = canvasHeight/2;
   }
 
+  var resize = function() {
+    // Set the new shape of canvas.
+    canvasQ.width($(target).width());
+    // canvasQ.height($(target).height()-10);
+
+    // Get the real size of canvas.
+    canvasWidth = canvasQ.width();
+    canvasHeight = canvasQ.height();
+    console.log(canvasQ.height())
+
+    mRenderer.setSize(canvasWidth, canvasHeight);
+
+    // TODO: Possible memory leak?
+    // mTexture1 = new THREE.WebGLRenderTarget(canvasWidth/2, canvasHeight/2,
+    //                     {minFilter: THREE.LinearFilter,
+    //                      magFilter: THREE.LinearFilter,
+    //                      format: THREE.RGBAFormat,
+    //                      type: THREE.FloatType});
+    // mTexture2 = new THREE.WebGLRenderTarget(canvasWidth/2, canvasHeight/2,
+    //                     {minFilter: THREE.LinearFilter,
+    //                      magFilter: THREE.LinearFilter,
+    //                      format: THREE.RGBAFormat,
+    //                      type: THREE.FloatType});
+
+    // do not wrap at edges
+    // mTexture1.wrapS = THREE.RepeatWrapping;
+    // mTexture1.wrapT = THREE.RepeatWrapping;
+    // mTexture2.wrapS = THREE.RepeatWrapping;
+    // mTexture2.wrapT = THREE.RepeatWrapping;
+
+    mUniforms.screenWidth.value = canvasWidth/2;
+    mUniforms.screenHeight.value = canvasHeight/2;
+  }
+
   var render = function(time) {
     var dt = (time - mLastTime)/20.0;
     if(dt > 0.8 || dt<=0)
@@ -156,8 +189,8 @@ init = function(){
 
     mScreenQuad.material = mGSMaterial;
     mUniforms.delta.value = dt;
-    mUniforms.feed.value = presets[8].feed;
-    mUniforms.kill.value = presets[8].kill;
+    mUniforms.feed.value = presets[4].feed;
+    mUniforms.kill.value = presets[4].kill;
 
     for(var i=0; i<accuracy; ++i) {
       if(!mToggled) {
@@ -182,7 +215,7 @@ init = function(){
     if (mLastTime < 1600) {
       // console.log(mLastTime);
       requestAnimationFrame(render);
-    } else if (mLastTime < 10000){ // cap at 100 seconds
+    } else if (mLastTime < 100000){ // cap at 100 seconds
       accuracy = 10;
       setTimeout( function() {
         requestAnimationFrame( render );
@@ -238,7 +271,7 @@ init = function(){
 
   // Some presets.
   var accuracy = 280; // lower = more accourate
-  var scale = 3.4; // 1.0 = 100%
+  var scale = 1.4; // zoom: 1.0 = 100%
   var presets = [
     { // Default
       feed: 0.037,
@@ -285,8 +318,8 @@ init = function(){
       kill: 0.045
     },
     { // The U-Skate World
-        feed: 0.062,
-        kill: 0.06093
+      feed: 0.062,
+      kill: 0.06093
     },
     { // ken's loops
       feed: 0.0178,
@@ -303,14 +336,19 @@ init = function(){
     // insert canvas
     var canvas = document.createElement('canvas');
     canvas.id     = "myCanvas";
-    canvas.width  = 1224;
-    canvas.height = 768;
-    canvas.style.marginBottom = "-768px";
+    canvas.width  = $(target).width();
+    canvas.height = $(target).height();
+    canvas.style.marginBottom = "-" + $(target).height()-5 + "px";
     canvas.style.zIndex = "-1";
     canvas.style.position = "relative";
-    var element = document.getElementById('target');
-    var targetparent = document.getElementById('targetparent');
-    targetparent.insertBefore(canvas, element);
+    // canvas.style.border = "1px solid #999";
+    canvas.style.opacity = opacity;
+    var element = $(target);
+    // var targetparent = $(targetparent);
+    element.prepend(canvas);
+
+    $('.masthead').css('background','none')
+    element.css('background','none')
 
     canvasQ = $(canvas);
 
@@ -355,7 +393,10 @@ init = function(){
     mScreenQuad = new THREE.Mesh(plane, mScreenMaterial);
     mScene.add(mScreenQuad);
 
-    resize(canvas.clientWidth, canvas.clientHeight);
+    setsize();
+    $( window ).resize(function() {
+      resize();
+    });
 
     render(0);
     // mUniforms.brush.value = new THREE.Vector2(0.5, 0.5);
@@ -365,27 +406,27 @@ init = function(){
     // todo make function
     setTimeout( function() {
       mUniforms.brush.value = new THREE.Vector2((canvasWidth*.5)/canvasWidth, 1-(canvasHeight*.2)/canvasHeight);
-    }, 200 );
+    }, 400 );
     setTimeout( function() {
       mUniforms.brush.value = new THREE.Vector2((canvasWidth*.8)/canvasWidth, 1-(canvasHeight*.8)/canvasHeight);
-    }, 450 );
+    }, 850 );
     setTimeout( function() {
       mUniforms.brush.value = new THREE.Vector2((canvasWidth*.3)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
-    }, 550 );
+    }, 1250 );
 
 
-    mColors[0].value = new THREE.Vector4(1, 1, 1, 0.199);
-    mColors[1].value = new THREE.Vector4(107/255, 172/255, 67/255, 0.2);
-    mColors[2].value = new THREE.Vector4(107/255, 172/255, 67/255, 0.9);
+    // mColors[0].value = new THREE.Vector4(0/255, 124/255, 131/255, 0.19);
+    // mColors[1].value = new THREE.Vector4(0/255, 124/255, 131/255, 0.2);
+    mColors[0].value = new THREE.Vector4(color1[0]/255, color1[1]/255, color1[2]/255, color1[3]);
+    mColors[1].value = new THREE.Vector4(color2[0]/255, color2[1]/255, color2[2]/255, color2[3]);
+    mColors[2].value = new THREE.Vector4(color3[0]/255, color3[1]/255, color3[2]/255, color3[3]);
     // mColors[2].value = new THREE.Vector4(0.8666, 0.8666, 0.8666, 0.9);
     setTimeout( function() {
     }, 1600 );
 
 
     // set drawing type
-    feed = presets[4].feed;
-    // kill = presets[4].kill;
+    feed = presets[7].feed;
+    // kill = presets[7].kill;
 
 }
-
-// })();
