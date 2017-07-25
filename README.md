@@ -36,8 +36,10 @@ Like so:
 - jQuery: Not strictly necessary. You could remove with some effort.
 
 ## Demo
-<script type="text/javascript" src="3rd/three.min.js"></script>
-<script type="text/javascript" src="grayscott/grayscott.js"></script>
+[The below works when viewed as a web page](https://khawkins98.github.io/reaction-diffusion/).
+<script type="text/javascript" src="https://khawkins98.github.io/reaction-diffusion/3rd/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="https://khawkins98.github.io/reaction-diffusion/3rd/three.min.js"></script>
+<script type="text/javascript" src="https://khawkins98.github.io/reaction-diffusion/grayscott.js"></script>
 <div id="targetparent">
   <div id="target" style="width: 700px; height: 400px; border: 1px solid #aaa">Some content here</div>
 </div>
