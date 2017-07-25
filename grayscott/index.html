@@ -17,7 +17,15 @@
   <script type="text/javascript" src="../3rd/three.min.js"></script>
   <script type="text/javascript" src="grayscott.js"></script>
   <script>
-    initDiffusion('target','targetparent');
+  var settings = {
+    target: '#target',
+    color1: [255,255,255,.19],
+    color2: [255,255,255,.2],
+    color3: [0,124,131,.9],
+    opacity: 0.9,
+    drawingType: 0
+  }
+  DiffusionVis.init(settings);
   </script>
 </body>
 </html>
