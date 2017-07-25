@@ -6,8 +6,8 @@ From the [uses the Gray-Scott solver](http://pmneila.github.com/jsexp/grayscott)
 > Roughly, this can be seen as a simulation of the behavior of diffusive living beings reproducing under conditions of limited food. Very different patterns emerge for slight changes in feeding and death rates.
 
 For more on this concept, see:
-- http://www.karlsims.com/rd-exhibit.html
-- http://www.karlsims.com/rd.html
+- [www.karlsims.com/rd-exhibit.html](http://www.karlsims.com/rd-exhibit.html)
+- [www.karlsims.com/rd.html](http://www.karlsims.com/rd.html)
 
 ## Using
 
@@ -25,7 +25,10 @@ Like so:
     color2: [255,255,255,.2],
     color3: [0,124,131,.9],
     opacity: 0.9,
-    drawingType: 0
+    drawingType: 0,
+    accuracy: 280,
+    scale: 1.4,
+    renderBoost: 600
   }
   DiffusionVis.init(settings);
 </script>
@@ -50,7 +53,10 @@ The code from above. [This works when viewed as a web page](https://khawkins98.g
     color2: [255,255,255,.2],
     color3: [0,124,131,.9],
     opacity: 0.9,
-    drawingType: 0
+    drawingType: 0,
+    accuracy: 280,
+    scale: 1.4,
+    renderBoost: 600
   }
   DiffusionVis.init(settings);
 </script>
