@@ -36,12 +36,12 @@ Like so:
 - jQuery: Not strictly necessary. You could remove with some effort.
 
 ## Demo
-[The below works when viewed as a web page](https://khawkins98.github.io/reaction-diffusion/).
+The code from above. [This works when viewed as a web page](https://khawkins98.github.io/reaction-diffusion/).
 <script type="text/javascript" src="https://khawkins98.github.io/reaction-diffusion/3rd/jquery-1.6.2.min.js"></script>
 <script type="text/javascript" src="https://khawkins98.github.io/reaction-diffusion/3rd/three.min.js"></script>
 <script type="text/javascript" src="https://khawkins98.github.io/reaction-diffusion/grayscott.js"></script>
 <div id="targetparent">
-  <div id="target" style="width: 700px; height: 400px; border: 1px solid #aaa">Some content here</div>
+  <div id="target" style="width: 700px; height: 400px; border: 1px solid #aaa">Some stuff here, the visulisation is z-layered underneath.</div>
 </div>
 <script>
   var settings = {
@@ -56,4 +56,4 @@ Like so:
 </script>
 
 ## Credit
-This uses the visulisation developed by [pmneila](https://github.com/pmneila/) at https://github.com/pmneila/jsexp
+This uses the visulisation developed by [pmneila](https://github.com/pmneila/) at [github.com/pmneila/jsexp](https://github.com/pmneila/jsexp)
