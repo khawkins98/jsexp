@@ -21,7 +21,8 @@ var DiffusionVis = {
     drawingType: 0,
     accuracy: 280, // lower = more accourate
     scale: 1.4, // zoom: 1.0 = 100%
-    renderBoost: 2600
+    renderBoost: 2600,
+    timelimit: 100000
   },
 
   init: function(options) {
@@ -156,10 +157,10 @@ var DiffusionVis = {
                            type: THREE.FloatType});
 
       // do not wrap at edges
-      // mTexture1.wrapS = THREE.RepeatWrapping;
-      // mTexture1.wrapT = THREE.RepeatWrapping;
-      // mTexture2.wrapS = THREE.RepeatWrapping;
-      // mTexture2.wrapT = THREE.RepeatWrapping;
+      mTexture1.wrapS = THREE.RepeatWrapping;
+      mTexture1.wrapT = THREE.RepeatWrapping;
+      mTexture2.wrapS = THREE.RepeatWrapping;
+      mTexture2.wrapT = THREE.RepeatWrapping;
 
       mUniforms.screenWidth.value = canvasWidth/2;
       mUniforms.screenHeight.value = canvasHeight/2;
@@ -234,7 +235,7 @@ var DiffusionVis = {
       if (mLastTime < s.renderBoost) {
         // console.log(mLastTime);
         requestAnimationFrame(render);
-      } else if (mLastTime < 100000){ // cap at 100 seconds
+      } else if (mLastTime < s.timelimit){ // cap at 100 seconds
         accuracy = 10;
         setTimeout( function() {
           requestAnimationFrame( render );
@@ -422,14 +423,20 @@ var DiffusionVis = {
 
     // seed the canvase with 'clicks'
     // todo make function
+    // setTimeout( function() {
+    //   mUniforms.brush.value = new THREE.Vector2((canvasWidth*.5)/canvasWidth, 1-(canvasHeight*.2)/canvasHeight);
+    // }, 400 );
+    // setTimeout( function() {
+    //   mUniforms.brush.value = new THREE.Vector2((canvasWidth*.8)/canvasWidth, 1-(canvasHeight*.8)/canvasHeight);
+    // }, 850 );
+    // setTimeout( function() {
+    //   mUniforms.brush.value = new THREE.Vector2((canvasWidth*.3)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
+    // }, 1250 );
     setTimeout( function() {
-      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.5)/canvasWidth, 1-(canvasHeight*.2)/canvasHeight);
-    }, 400 );
-    setTimeout( function() {
-      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.8)/canvasWidth, 1-(canvasHeight*.8)/canvasHeight);
+      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.99)/canvasWidth, 1-(canvasHeight*.3)/canvasHeight);
     }, 850 );
     setTimeout( function() {
-      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.3)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
+      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.01)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
     }, 1250 );
 
 

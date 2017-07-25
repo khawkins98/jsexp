@@ -35,8 +35,8 @@ Like so:
 ```
 
 ## Requirements
-- WebGL: a browser and hardware [that supports Three.js](http://caniuse.com/#feat=webgl)
-- jQuery: Not strictly necessary. You could remove with some effort.
+- WebGL: Browser and hardware [support of Three.js](http://caniuse.com/#feat=webgl)
+- jQuery: Not strictly necessary. (You could remove this dependency with some effort).
 
 ## Demo
 The code from above. [This works when viewed as a web page](https://khawkins98.github.io/reaction-diffusion/).
