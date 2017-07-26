@@ -135,7 +135,7 @@ var DiffusionVis = {
     var setsize = function() {
       // Set the new shape of canvas.
       canvasQ.width($(s.target).width());
-      canvasQ.height($(s.target).height()+7);
+      canvasQ.height($(s.target).height());
 
       // Get the real size of canvas.
       canvasWidth = canvasQ.width();
@@ -170,7 +170,7 @@ var DiffusionVis = {
       // Set the new shape of canvas.
       canvasQ.width($(s.target).width());
       canvasQ.height($(s.target).height());
-      canvasQ.css('margin-bottom','-'+($(s.target).innerHeight()-18)+'px');
+      // canvasQ.css('margin-bottom','-'+($(s.target).innerHeight()-18)+'px');
 
       // Get the real size of canvas.
       canvasWidth = canvasQ.width();
@@ -355,9 +355,9 @@ var DiffusionVis = {
     canvas.id     = "myCanvas";
     canvas.width  = $(s.target).width();
     canvas.height = $(s.target).height();
-    canvas.style.marginBottom = "-" + $(s.target).height()-5 + "px";
+    // canvas.style.marginBottom = "-" + $(s.target).height()-5 + "px";
     canvas.style.zIndex = "-1";
-    canvas.style.position = "relative";
+    canvas.style.position = "absolute";
     // canvas.style.border = "1px solid #999";
     canvas.style.opacity = s.opacity;
     var element = $(s.target);
