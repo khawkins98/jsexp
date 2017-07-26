@@ -24,6 +24,7 @@ function DiffusionVis(options) {
     scale: 1.4, // zoom: 1.0 = 100%
     renderBoost: 2600,
     timelimit: 100000,
+    position: 'middle', // where to position the seed dots. currently only middle and sides
     dynamicResize: true // resize vis on browser squeeze, pull
   }
 
@@ -431,22 +432,25 @@ DiffusionVis.prototype.init = function() {
   mLastTime = new Date().getTime();
 
   // seed the canvase with 'clicks'
-  // todo make function
-  // setTimeout( function() {
-  //   mUniforms.brush.value = new THREE.Vector2((canvasWidth*.5)/canvasWidth, 1-(canvasHeight*.2)/canvasHeight);
-  // }, 400 );
-  // setTimeout( function() {
-  //   mUniforms.brush.value = new THREE.Vector2((canvasWidth*.8)/canvasWidth, 1-(canvasHeight*.8)/canvasHeight);
-  // }, 850 );
-  // setTimeout( function() {
-  //   mUniforms.brush.value = new THREE.Vector2((canvasWidth*.3)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
-  // }, 1250 );
-  setTimeout( function() {
-    mUniforms.brush.value = new THREE.Vector2((canvasWidth*.99)/canvasWidth, 1-(canvasHeight*.3)/canvasHeight);
-  }, 850 );
-  setTimeout( function() {
-    mUniforms.brush.value = new THREE.Vector2((canvasWidth*.01)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
-  }, 1250 );
+  if (s.position === 'middle') {
+    setTimeout( function() {
+      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.5)/canvasWidth, 1-(canvasHeight*.2)/canvasHeight);
+    }, 400 );
+    setTimeout( function() {
+      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.8)/canvasWidth, 1-(canvasHeight*.8)/canvasHeight);
+    }, 850 );
+    setTimeout( function() {
+      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.3)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
+    }, 1250 );
+  } else if (s.position === 'sides') {
+    // todo make function
+    setTimeout( function() {
+      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.99)/canvasWidth, 1-(canvasHeight*.3)/canvasHeight);
+    }, 850 );
+    setTimeout( function() {
+      mUniforms.brush.value = new THREE.Vector2((canvasWidth*.01)/canvasWidth, 1-(canvasHeight*.7)/canvasHeight);
+    }, 1250 );
+  }
 
 
   // mColors[0].value = new THREE.Vector4(0/255, 124/255, 131/255, 0.19);
