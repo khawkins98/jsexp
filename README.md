@@ -30,7 +30,7 @@ Like so:
     scale: 1.4,
     renderBoost: 600
   }
-  DiffusionVis.init(settings);
+  var vis = new DiffusionVis(settings);
 </script>
 ```
 
@@ -58,7 +58,7 @@ The code from above. [This works when viewed as a web page](https://khawkins98.g
     scale: 1.4,
     renderBoost: 600
   }
-  DiffusionVis.init(settings);
+  var vis = new DiffusionVis(settings);
 </script>
 
 ## Credit
