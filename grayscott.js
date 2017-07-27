@@ -372,7 +372,7 @@ DiffusionVis.prototype.init = function() {
   // var targetparent = $(targetparent);
   element.prepend(canvas);
 
-  $('.masthead').css('background','none')
+  // parent element can't have a background
   element.css('background','none')
 
   canvasQ = $(canvas);
