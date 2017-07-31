@@ -8,14 +8,12 @@
  */
 
 
+
+// we use the vis as a background by injecting it just before a div
 function DiffusionVis(options) {
-// var DiffusionVis = {
-  // target = target div
-  // we use the vis as a background by injecting it just before a div
-  // color1= array of colors to use [r,g,b,position]
   var settings = {
-    target: '.visulisation',
-    color1: [255,255,255,.19],
+    target: '.visulisation',  // target = target div
+    color1: [255,255,255,.19], // array of colors to use [r,g,b,position]
     color2: [0,0,0,.2],
     color3: [255,255,255,.9],
     opacity: 1.0,
@@ -30,7 +28,14 @@ function DiffusionVis(options) {
 
   this.s = extend({}, settings, options);
 
-  this.init();
+  // https://github.com/mrdoob/three.js/blob/master/examples/js/Detector.js
+  if (Detector.webgl) {
+    // Initiate function or other initializations here
+    this.init();
+  } else {
+    var warning = Detector.getWebGLErrorMessage();
+    console.log('Sorry, the background animation cannot be shown in this browser, details:', warning);
+  }
 }
 
 
@@ -38,7 +43,7 @@ DiffusionVis.prototype.init = function() {
 
   var s = this.s;
 
-  // Shader literalthis.s.
+  // Shader literals.
   // https://stackoverflow.com/a/14248861/725343
   var standardVertexShader = `
     varying vec2 vUv;
@@ -484,4 +489,76 @@ function extend() {
     }
   }
   return arguments[0];
+}
+
+// Webgl Detector
+// https://github.com/mrdoob/three.js/edit/master/examples/js/Detector.js
+/**
+ * @author alteredq / http://alteredqualia.com/
+ * @author mr.doob / http://mrdoob.com/
+ */
+
+var Detector = {
+  canvas: !! window.CanvasRenderingContext2D,
+  webgl: ( function () {
+
+    try {
+
+      var canvas = document.createElement( 'canvas' ); return !! ( window.WebGLRenderingContext && ( canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) ) );
+
+    } catch ( e ) {
+
+      return false;
+
+    }
+
+  } )(),
+  workers: !! window.Worker,
+  fileapi: window.File && window.FileReader && window.FileList && window.Blob,
+
+  getWebGLErrorMessage: function () {
+
+    var element = document.createElement( 'div' );
+    element.id = 'webgl-error-message';
+    element.style.fontFamily = 'monospace';
+    element.style.fontSize = '13px';
+    element.style.fontWeight = 'normal';
+    element.style.textAlign = 'center';
+    element.style.background = '#fff';
+    element.style.color = '#000';
+    element.style.padding = '1.5em';
+    element.style.width = '400px';
+    element.style.margin = '5em auto 0';
+
+    if ( ! this.webgl ) {
+
+      element.innerHTML = window.WebGLRenderingContext ? [
+        'Your graphics card does not seem to support <a href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation" style="color:#000">WebGL</a>.<br />',
+        'Find out how to get it <a href="http://get.webgl.org/" style="color:#000">here</a>.'
+      ].join( '\n' ) : [
+        'Your browser does not seem to support <a href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation" style="color:#000">WebGL</a>.<br/>',
+        'Find out how to get it <a href="http://get.webgl.org/" style="color:#000">here</a>.'
+      ].join( '\n' );
+
+    }
+
+    return element;
+
+  },
+
+  addGetWebGLMessage: function ( parameters ) {
+    var parent, id, element;
+    parameters = parameters || {};
+    parent = parameters.parent !== undefined ? parameters.parent : document.body;
+    id = parameters.id !== undefined ? parameters.id : 'oldie';
+    element = Detector.getWebGLErrorMessage();
+    element.id = id;
+    parent.appendChild( element );
+  }
+
+};
+
+// browserify support
+if ( typeof module === 'object' ) {
+  module.exports = Detector;
 }
